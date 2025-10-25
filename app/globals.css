@@ -1,0 +1,40 @@
+/* app/globals.css */
+@import "tailwindcss";
+
+@theme {
+  /* Custom animations */
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+
+  /* Custom colors if needed */
+  --color-background: #f9fafb;
+  --color-foreground: #111827;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Custom utility for text clamping */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
