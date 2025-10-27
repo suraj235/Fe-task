@@ -1,79 +1,75 @@
-"use client";
-// ToDo/Improvements: It can be converted to server component if routing is implemented. 
-// (Didn't implemented here Becauase it was not the part of the task requirement)
+import { decrypt } from '@/lib/encryption';
+import { Survey } from '@/types/survey';
+import SurveyList from '@/components/SurveyList';
 
-import ProductCard from "@/components/ProductCard";
-import { Product } from "@/types/product";
+async function getSurveys(): Promise<Survey[]> {
+  try {
+    // Fetch encrypted data from our API route
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/surveys`, {
+      cache: 'no-store',
+    });
 
-export const sampleProducts: Product[] = [
-  {
-    id: "1",
-    image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-    title: "Premium Wireless Headphones",
-    description:
-      "Experience crystal-clear audio with our premium wireless headphones. Featuring active noise cancellation and 30-hour battery life.",
-  },
-  {
-    id: "2",
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
-    title: "Classic Sneakers",
-    description:
-      "Step up your style game with these comfortable and trendy classic sneakers. Perfect for everyday wear.",
-  },
-  {
-    id: "3",
-    image:
-      "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&q=80",
-    title: "Smart Fitness Watch",
-    description:
-      "Track your fitness goals with precision. Features heart rate monitoring, GPS, and waterproof design.",
-  },
-];
+    if (!response.ok) {
+      throw new Error('Failed to fetch surveys');
+    }
 
-export default function Home() {
-  const handleViewMore = (productTitle: string) => {
-    alert(`Viewing more details about: ${productTitle}`);
-    // ToDo/Improvements:
-    // 1. In a real app, navigate to product detail page
-    // 2. router.push(`/products/${productId}`);
-  };
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error('API returned error');
+    }
+
+    // Decrypt the payload on the server
+    const decryptedPayload = decrypt(result.data);
+    const surveys: Survey[] = JSON.parse(decryptedPayload);
+
+    return surveys;
+  } catch (error) {
+    console.error('Error fetching surveys:', error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  // Server-side data fetching with decryption
+  const surveys = await getSurveys();
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      {/* Header Section */}
-      <header className="text-center mb-12">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
-          Our Featured Products
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Discover our carefully curated collection of premium products designed
-          to enhance your lifestyle
-        </p>
-      </header>
-
-      {/* Product Grid */}
-      <section className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sampleProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              image={product.image}
-              title={product.title}
-              description={product.description}
-              buttonText="View More"
-              onButtonClick={() => handleViewMore(product.title)}
-            />
-          ))}
+    <main className="min-h-screen bg-linear-to-br from-gray-50 via-blue-50 to-gray-100">
+      {/* Hero Section */}
+      <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-12 px-4 sm:px-6 lg:px-8 shadow-lg">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
+            Secure Survey Dashboard
+          </h1>
+          <p className="text-lg text-blue-100 max-w-3xl">
+            End-to-end encrypted patient surveys with server-side decryption for maximum security
+          </p>
+          <div className="mt-4 flex items-center gap-2">
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-sm text-blue-100">
+              All data encrypted with AES-256-GCM
+            </span>
+          </div>
         </div>
       </section>
 
+      {/* Survey List */}
+      <SurveyList initialSurveys={surveys} />
+
       {/* Footer */}
-      <footer className="text-center mt-16 text-gray-500">
-        <p className="text-sm">
-          Built with Next.js 16 & Tailwind CSS | Responsive Product Card Demo
-        </p>
+      <footer className="bg-white border-t border-gray-200 mt-16 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-gray-600">
+            <p className="text-sm mb-2">
+              Built with Next.js 16, TypeScript, and Framer Motion
+            </p>
+            <p className="text-xs text-gray-500">
+              A Frontend Assessment for Jasper Colin @{new Date().getFullYear()} Copyright :)
+            </p>
+          </div>
+        </div>
       </footer>
     </main>
   );

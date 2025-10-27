@@ -1,5 +1,59 @@
-[00:00:11.730] Server  LOG      ✓ Ready in 7.7s
-[00:00:14.890] Server  LOG      ○ Compiling / ...
-[00:00:19.512] Browser WARN    Image with src "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
-[00:00:19.512] Browser WARN    Image with src "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
-[00:00:19.512] Browser WARN    Image with src "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&q=80" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:00:32.040] Server  LOG      ✓ Ready in 21.7s
+[00:00:35.204] Server  LOG      ○ Compiling / ...
+[00:00:50.964] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__var..."
+-                           cz-shortcut-listen="true"
+                          >
+                  ...
+
+[00:10:16.422] Server  LOG      ✓ Compiled in 84ms
+[00:11:00.438] Server  LOG      ✓ Compiled in 71ms
+[00:11:08.237] Server  LOG      ✓ Compiled in 1332ms
+[00:11:08.953] Browser ERROR   ./components/SurveyList.tsx:1:10
+Ecmascript file had an error
+> 1 | import { useState, useMemo } from 'react';
+    |          ^^^^^^^^
+  2 | import { motion, AnimatePresence } from 'framer-motion';
+  3 | import { Survey } from '@/types/survey';
+  4 | import SurveyCard from './SurveyCard';
+
+You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+
+ Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+
+Import trace:
+  Server Component:
+    ./components/SurveyList.tsx
+    ./app/page.tsx
+[00:11:42.213] Server  LOG      ✓ Compiled in 82ms
+[00:12:06.566] Server  LOG      ✓ Compiled in 69ms
+[00:12:15.490] Server  LOG      ✓ Compiled in 56ms
